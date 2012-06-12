@@ -1,0 +1,77 @@
+#!/usr/bin/perl
+
+print "\n*** Note: for the directories, do not add the ending '/'\n";
+print "*** Example: Input the local directory: /home/gus/parse\n\n";
+print "Input the local directory: ";
+chomp($dir = <>);
+$newdir = "\$localdir = \"$dir\";";
+print "Input the log directory: ";
+chomp($logdir = <>);
+print "Input the timezone: ";
+chomp($tzone = <>);
+
+open(PARSE,"<parse.pl")||die("Unable to open parse input file");
+open(HTML,"<HTML_out.pl")||die("Unable to open HTML input file");
+
+@parse = ();
+@html = ();
+
+while(<PARSE>){
+	push(@parse, $_);
+}
+while(<HTML>){
+	push(@html, $_);
+}
+close(PARSE);
+close(HTML);
+
+open(PARSE,">parse.pl")||die("Unable to open parse output file");
+open(HTML,">HTML_out.pl")||die("Unable to open HTML output file");
+
+foreach $line(@parse){
+	if ($line =~ m/\$localdir =/){
+		print PARSE $newdir."\r\n";
+	}else{
+		print PARSE $line;
+	}
+}
+
+foreach $line(@html){
+	if ($line =~ m/\$localdir =/){
+		print HTML $newdir."\r\n";
+	}else{
+		print HTML $line;
+	}
+}
+
+close(PARSE);
+close(HTML);
+
+open(FILE,">parse.conf")||die("Unable to open parse.conf file");
+print FILE "logdir=$logdir\n";
+print FILE "lastfile=00000000000000.log\n";
+print FILE "lasttimestamp=0\n";
+print FILE "timezone=$tzone\n";
+close(FILE);
+
+open (FILE,">link_timestamp")||die("Unable to open link_timestamp file");
+print FILE "131.179.141.15:0\n";
+print FILE "128.252.153.193:0\n";
+print FILE "192.172.226.159:0\n";
+print FILE "150.135.82.77:0\n";
+print FILE "129.82.138.48:0\n";
+print FILE "128.195.4.36:0\n";
+print FILE "Northeastern University:0\n";
+print FILE "128.252.153.2:0\n";
+print FILE "128.174.239.7:0\n";
+print FILE "13.7.9.129:0\n";
+print FILE "131.179.196..46:0\n";
+print FILE "141.225.11.150:0\n";
+close(FILE);
+
+open (FILE,">links1")||die("Unable to open links1 file");
+close(FILE);
+open (FILE,">links3")||die("Unable to open links3 file");
+close(FILE);
+open (FILE,">prefix")||die("Unable to open prefix file");
+close(FILE);
